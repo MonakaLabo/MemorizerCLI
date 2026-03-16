@@ -55,6 +55,7 @@ root
         # …
     }
 }
+```
 
 ## dict/status.jsonの構造
 
