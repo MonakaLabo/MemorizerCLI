@@ -16,7 +16,7 @@ word2   mean2
 …
 ```
 
-```
+```json
 # .json
 {
     "tabletitle":"title",
