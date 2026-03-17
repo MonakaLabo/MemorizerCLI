@@ -1,3 +1,11 @@
+import sys
+
+if __name__ == "__main__":
+    print("このファイルは直接実行できません。")
+    print("最上階層の\"launcher.py\"を実行してください。")
+    sys.exit()
+
+import os
 from programs.logger import (
     get_logger,
     displaytoggle
