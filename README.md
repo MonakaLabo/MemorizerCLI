@@ -36,9 +36,8 @@ root
     "tabletitle":"title",
     "bookcode":"code",
     "words":{
-        "num1":["word1", "mean1"],
-        "num2":["word2", "mean2"],
-        # …
+        "1":["word1", "mean1"],
+        "2":["word2", "mean2"]
     }
 }
 ```
@@ -51,8 +50,7 @@ root
     "max_id":"1000",
     "words":{
         "1":["word1", "word2"],
-        "2":["word2", "word2"],
-        # …
+        "2":["word2", "word2"]
     }
 }
 ```
@@ -63,7 +61,6 @@ root
 {
     "tableA.json":"1234",
     "tableB.json":"1357",
-    "name.json":"filesize",
-    # …
+    "name.json":"filesize"
 }
 ```
