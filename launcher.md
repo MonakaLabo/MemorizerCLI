@@ -4,12 +4,14 @@
 
 CLI上にログを、logs/ディレクトリに同内容のログファイルを作成する。
 
-## 1. table/table.jsonをdict/book/bookcode.jsonに変換する
+## 1. table/table.jsonをdict/bookcode.jsonに変換する
 
-table/table.jsonを読み、bookcode毎に大きな単語リストであるdict/book/bookcode.jsonを作る。
+`table/table.json` を読み、bookcode毎に大きな単語リストである `dict/bookcode.json` を作る。
 
 > [!NOTE]
 > 毎回この処理をすることにして、status.jsonの運用をなくしてもいいかも。
+>> # 追記
+>> そのようにしたので、パスが `dict/book/` から `dict/` になりました。
 
 ### エラーハンドリング
 
