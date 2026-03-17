@@ -6,6 +6,7 @@ if __name__ == "__main__":
     sys.exit()
 
 import os
+import json
 from programs.logger import (
     get_logger,
     displaytoggle
@@ -63,6 +64,19 @@ def intinput():
             return n
         
 
+def load_json(path: str):
+    '''
+    指定されたパスのjsonを返します。
+    '''
+    try:
+        with open(path, encoding="utf-8") as f:
+            return json.load(f)
+    except:
+        errormsg = f"構造エラー: 指定されたパス \"{path}\" はjsonファイルではありません"
+        logger.critical(errormsg)
+        raise ValueError(errormsg)
+
+
 def make0menu(*options: str) ->int:
     '''
     選択肢が0から始まるメニューを生成します。\n
@@ -70,8 +84,9 @@ def make0menu(*options: str) ->int:
     None入力は0を返すため、0をデフォルトの選択肢にしてください。
     '''
     if len(options) < 2:
-        logger.critical("構文エラー: make0menu()は2つ以上の引数を受け取ります")
-        raise ValueError("構文エラー: make0menu()は2つ以上の引数を受け取ります")
+        errormsg = "構文エラー: make0menu()は2つ以上の引数を受け取ります"
+        logger.critical(errormsg)
+        raise ValueError(errormsg)
 
     while True:
 
@@ -142,8 +157,7 @@ def choose_tables():
             continue
 
         # 重複削除
-        selected = list(dict.fromkeys(selected))
-        selected = selected.sort
+        selected = list(set(selected))
 
         return selected
     
@@ -178,9 +192,7 @@ def choose_books():
         if not valid:
             continue
 
-        # 重複削除
-        selected = list(dict.fromkeys(selected))
-        selected = selected.sort
+        selected = list(set(selected))
 
         return selected
 
@@ -215,7 +227,7 @@ def main(title=False):
 
     if title == True:
         bigrepositoryname()
-    
+
     c = make0menu(
         "通常暗記モード",
         "苦手暗記モード",
