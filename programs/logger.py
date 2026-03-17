@@ -3,9 +3,30 @@ import os
 from datetime import datetime
 
 _logger = None
+_display_toggle = True
+_console_handler = None
+
+def displaytoggle(flag: bool):
+
+    global _display_toggle, _logger, _console_handler
+
+    _display_toggle = flag
+
+    if _logger is None or _console_handler is None:
+        return
+
+    if flag:
+        if _console_handler not in _logger.handlers:
+            _logger.addHandler(_console_handler)
+
+    else:
+        if _console_handler in _logger.handlers:
+            _logger.removeHandler(_console_handler)
+
 
 def get_logger():
-    global _logger
+
+    global _logger, _console_handler
 
     if _logger:
         return _logger  # 二重防止
@@ -25,12 +46,15 @@ def get_logger():
     # CLI
     ch = logging.StreamHandler()
     ch.setFormatter(formatter)
+    _console_handler = ch
 
     # file
     fh = logging.FileHandler(logfile, encoding="utf-8")
     fh.setFormatter(formatter)
 
-    logger.addHandler(ch)
+    if _display_toggle:
+        logger.addHandler(ch)
+
     logger.addHandler(fh)
 
     _logger = logger
