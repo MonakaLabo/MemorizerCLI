@@ -20,6 +20,13 @@ from programs.basicfancs import (
     make1menu
 )
 
+from programs.question import (
+    collectfiles,
+    changeorder,
+    reverser,
+    swither
+)
+
 logger = get_logger()
 
 TABLES_DIR = "tables"
@@ -273,7 +280,20 @@ def memorize_menu():
         reverse = choosereverse()
 
         if confirmsetting(files, order, reverse, count, total):
-            # 問題生成(->dict)
+            data = collectfiles(files)
+            logger.info(f"data( len={len(data)} )を出題設定処理にかけます。")
+
+            logger.info(f"changeorder(data, {order}) をdataに代入します。")
+            data = changeorder(data, order)
+            
+            logger.info(f"reverser(data, {reverse}) をdataに代入します。")
+            data = reverser(data, reverse)
+
+            logger.info(f"swither(data, {count}) をdataに代入します。")
+            data = swither(data, count)
+
+            logger.info("dataの出題設定処理が完了しました。")
+
             break
 
 
