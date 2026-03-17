@@ -197,20 +197,171 @@ def choose_books():
         return selected
 
 
+def chooseunit():
+
+    print()
+
+    while True:
+
+        c = make0menu(
+            "tableごとに出題",
+            "書籍ごとに出題"
+        )
+
+        if c == 0:
+            return "table"
+        elif c == 1:
+            return "dict"
+        else:
+            print("有効値を入力してください")
+
+
+def Qcountinput(max: int) ->int:
+
+    print()
+
+    while True:
+        print(f"出題数を入力してください。\n最大値は {max} 問です。")
+        c = intinput()
+
+        if 0 < c <= max:
+            return c
+        else:
+            print("有効値を入力してください")
+
+
+def chooseorder():
+
+    print()
+
+    while True:
+        print("出題順を選択してください。")
+        c = make0menu(
+            "ランダム",
+            "正順",
+            "逆順"
+        )
+
+        if c == 0:
+            return "random"
+        elif c == 1:
+            return "for"
+        elif c == 2:
+            return "back"
+        else:
+            print("有効値を入力してください")
+
+
+def choosereverse():
+
+    print()
+
+    while True:
+        print("出題方向を選択してください。")
+        c = make0menu(
+            "表向き",
+            "裏向き"
+        )
+
+        if c == 0:
+            return False
+        elif c == 1:
+            return True
+        else:
+            print("有効値を入力してください")
+
+
+def jsonwordcount(paths: list) ->int:
+
+    total = 0
+
+    for path in paths:
+        data = load_json(path)
+        total += int(data["count"])
+    
+    return total
+
+
+def confirmsetting(files: list, 
+                   order: str, 
+                   reverse: bool, 
+                   count: int, 
+                   total: int
+                   ) -> bool:
+    
+    dp_files = len(files)
+    
+    if order == "random":
+        dp_order = "ランダム"
+    elif order == "for":
+        dp_order = "正順"
+    elif order == "back":
+        dp_order = "逆順"
+    else:
+        errormsg = f"構造エラー: confirmsettingの第2引数 order: str は[\"random\", \"for\", \"back\"]のみを受け付けます({order})"
+        logger.critical(errormsg)
+        ValueError(errormsg)
+
+    if reverse == True:
+        dp_revse = "裏向き"
+    else:
+        dp_revse = "表向き"
+
+    while True:
+        print()
+        minititle("設定の確認")
+        print()
+
+        print(f"選択中のファイル: {dp_files} 件")
+        print(f"出題順　　　　　: {dp_order}")
+        print(f"出題方向　　　　: {dp_revse}")
+
+        if order == "random":
+            print(f"出題数　　　　　: {count} / {total} 問")
+        else:
+            print(f"出題数　　　　　: {count} 問")
+
+        print("以上の設定でよろしいですか？")
+        
+        c = make0menu(
+            "はい",
+            "いいえ"
+        )
+
+        if c == 0:
+            return True
+        elif c == 1:
+            return False
+        else:
+            print("有効値を入力してください")
+
+
 def memorize_menu():
     
     boxtitle("通常暗記モード")
 
-    c = make0menu(
-        "tableごとに出題",
-        "書籍ごとに出題"
-    )
-
-    if c == 0:
-        tables = choose_tables()
+    while True:
     
-    elif c == 1:
-        books = choose_books()
+        unit = chooseunit()
+        
+        if unit == "table":
+            files = choose_tables()
+        else:
+            files = choose_books()
+        
+        total = jsonwordcount(files)
+        order = chooseorder()
+        
+        if order == "random":
+            count = Qcountinput(total)
+        else:
+            count = total
+        
+        reverse = choosereverse()
+
+        if confirmsetting(files, order, reverse, count, total):
+            # 問題生成(->dict)
+            break
 
 
 def improve_menu():
