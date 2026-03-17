@@ -1,6 +1,8 @@
 # useradded
 
 logs/
+dict/
+!dict/code2title.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
