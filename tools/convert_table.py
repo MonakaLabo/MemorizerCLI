@@ -27,9 +27,12 @@ def convert_table(path):
 
         current_id += 1
 
+    count = len(words)
+
     result = {
         "tabletitle": tabletitle,
         "bookcode": bookcode,
+        "count": f"\"{count}\"", # 他ファイルと統一するため。
         "words": words
     }
 

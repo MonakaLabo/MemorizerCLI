@@ -35,6 +35,7 @@ root
 {
     "tabletitle":"title",
     "bookcode":"code",
+    "count":2,
     "words":{
         "1":["word1", "mean1"],
         "2":["word2", "mean2"]
