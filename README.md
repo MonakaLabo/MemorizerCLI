@@ -55,12 +55,10 @@ root
 }
 ```
 
-## dict/status.jsonの構造
-
+## dict/code2title.jsonの構造
 ```json
 {
-    "tableA.json":"1234",
-    "tableB.json":"1357",
-    "name.json":"filesize"
+    "bookcode1":"booktitle1",
+    "bookcode2":"booktitle2"
 }
 ```
