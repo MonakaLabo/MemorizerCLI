@@ -186,7 +186,20 @@ def choose_books():
 
 
 def memorize_menu():
-    pass
+    
+    boxtitle("通常暗記モード")
+
+    c = make0menu(
+        "tableごとに出題",
+        "書籍ごとに出題"
+    )
+
+    if c == 0:
+        tables = choose_tables()
+    
+    elif c == 1:
+        books = choose_books()
+
 
 def improve_menu():
     pass
