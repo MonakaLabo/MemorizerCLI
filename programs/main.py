@@ -167,9 +167,14 @@ def Qcountinput(max: int) ->int:
         c = input("> ")
         if c == "":
             return max
-
-        if isinstance(c, int) and 0 < c <= max:
-                return c
+        
+        try:
+            c = int(c)
+        except:
+            print("有効値を入力してください")
+        else:
+            if 0 < c <= max:
+                    return c
         
         print("有効値を入力してください")
 
