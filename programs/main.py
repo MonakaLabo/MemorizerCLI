@@ -24,7 +24,7 @@ from programs.question import (
     collectfiles,
     changeorder,
     reverser,
-    swither
+    question_main
 )
 
 logger = get_logger()
@@ -314,10 +314,9 @@ def memorize_menu():
             logger.info(f"reverser(data, {reverse}) をdataに代入します。")
             data = reverser(data, reverse)
 
-            logger.info(f"swither(data, {count}) をdataに代入します。")
-            data = swither(data, count)
-
             logger.info("dataの出題設定処理が完了しました。")
+
+            question_main(data, count)
 
             break
 

@@ -1,6 +1,7 @@
 import logging
 import os
 import random
+import time
 from datetime import datetime
 from programs.logger import get_logger
 from programs.basicfancs import (
@@ -110,7 +111,162 @@ def swither(data: list, count: int) ->list:
     result = []
 
     for _ in range(count):
-        result.append(data.pop())
+        result.append(data.pop(0))
 
     logger.info(f"dataの先頭 {count} 件を抜き出して返します。")
     return result
+
+
+def printstatus(now: int, total :int, count: int,
+                start: float, latest:float=0,
+                corr: int=0, ans: int=0):
+    
+    # minititle("status")
+    # progress: [現在の問題数] / [総出題数]
+    # correct : [正答数] ( [百分率] % )
+    # duration: [開始から経過した時間(mm:ss.s)]
+    
+    # minititle("latest")
+    # correct : [正答番号]
+    # your ans: [選択番号] [正誤(O/X)]
+    # time : [回答に掛かった時間(s.ss)]
+
+    nowtime = time.time()
+
+    minititle("status")
+    print(f"progress: {now} / {total}")
+
+    try:
+        rate = count/(now-1)*100
+    except ZeroDivisionError:
+        rate = 0
+    print(f"correct : {count} ({rate:.1f} %)")
+    print(f"duration: {(nowtime-start):.1f} s")
+    print()
+
+    if now != 1:
+        minititle("latest")
+        print(f"correct : {corr+1}")
+        print(f"your ans: {ans} -> {'O' if corr+1 == ans else 'X'}")
+        print(f"time    : {(nowtime-latest):.1f} s")
+    else:
+        for _ in range(4):
+            print()
+
+
+def question(line: dict, options: list, correct: int) ->dict:
+
+    bookcode = line["bookcode"]
+    wid = line["wid"]
+    Q = line["q"]
+    A = line["a"]
+
+    while True:
+        print()
+        boxtitle("QUESTION", 8)
+        print(f"bookcode: {bookcode}")
+        print(f"Wards ID: {wid}")
+
+        print(f"\n{Q}")
+        
+        for i, opt in enumerate(options):
+            print(i+1, ": ", opt)
+        
+        c = input("> ")
+
+        if c == "/exit":
+            return {
+                "iscorrect": "STOP",
+                "ans": None
+            }
+        
+        try:
+            c = int(c)
+        except:
+            print("有効値を入力してください")
+        else:
+            if 0 < c <= len(options):
+                if c == correct + 1:
+                    iscorrect = True
+                else:
+                    iscorrect = False
+                break
+            else:
+                print("有効値を入力してください")
+    
+    return {
+        "iscorrect": iscorrect,
+        "ans": c
+    }
+    
+
+
+def test_main(que: list, answers: list):
+
+    total = len(que)
+    count = 0
+    timestart = time.time()
+    correct = 0
+    ans = 0
+    answered = 0
+    iscorrect = None
+
+    for i, line in enumerate(que):
+        bookcode = line["bookcode"]
+        wid = line["wid"]
+        Q = line["q"]
+        A = line["a"]
+
+        timelatest = time.time()
+
+        if i == 0:
+            printstatus(i+1, total, count, timestart)
+        else:
+            printstatus(i+1, total, count, timestart, timelatest, correct, ans)
+
+        # 選択肢生成
+        while True:
+            options = random.sample(answers, 3)
+            try:
+                options.index(A)
+            except:
+                break
+
+        options.append(A)
+        options = changeorder(options, "random")
+        correct = options.index(A)
+
+        iscorrect = question(line, options, correct)
+        answered += 1
+        ans = iscorrect["ans"]
+        iscorrect = iscorrect["iscorrect"]
+
+        if iscorrect == "STOP":
+            break
+        elif iscorrect:
+            count += 1
+
+    if iscorrect == "STOP":
+        stopwith = "exit"
+    else:
+        stopwith = "finish"
+
+    return {
+        "answered": answered,
+        "correct": count,
+        "stopwith": stopwith
+    }
+
+
+def question_main(data: list, count: int):
+
+    answers = []
+    
+    for line in data:
+        answers.append(line["a"])
+
+    questions = swither(data, count)
+
+    boxtitle("準備が整ったら、Enterで開始します", 5)
+    input("> ")
+    test_main(questions, answers)
