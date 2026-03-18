@@ -2,6 +2,8 @@ import logging
 import os
 import random
 import time
+import json
+from collections import defaultdict
 from datetime import datetime
 from programs.logger import get_logger
 from programs.basicfancs import (
@@ -14,6 +16,8 @@ from programs.basicfancs import (
 )
 
 logger = get_logger()
+
+STATS_DIR = "stats"
 
 def collectfiles(files: list):
 
@@ -117,6 +121,52 @@ def swither(data: list, count: int) ->list:
     return result
 
 
+def stats_update(record):
+
+    OK = defaultdict(list)
+    NG = defaultdict(list)
+
+    for line in record:
+        if line["jud"] == "OK":
+            OK[line["bookcode"]].append(line["wid"])
+        if line["jud"] == "NG":
+            NG[line["bookcode"]].append(line["wid"])
+    
+    os.makedirs(STATS_DIR, exist_ok=True)
+
+    if os.path.exists(os.path.join(STATS_DIR, "stats.json")):
+        stats = load_json(os.path.join(STATS_DIR, "stats.json"))
+    else:
+        stats = {}
+
+        for bookcode, wid_list in OK.items():
+            if bookcode not in stats:
+                stats[bookcode] = {}
+
+            for wid in wid_list:
+                wid = str(wid)
+
+                if wid not in stats[bookcode]:
+                    stats[bookcode][wid] = [0, 0]
+
+                stats[bookcode][wid][0] += 1
+
+        for bookcode, wid_list in NG.items():
+            if bookcode not in stats:
+                stats[bookcode] = {}
+
+            for wid in wid_list:
+                wid = str(wid)
+
+                if wid not in stats[bookcode]:
+                    stats[bookcode][wid] = [0, 0]
+
+                stats[bookcode][wid][1] += 1
+
+        with open(os.path.join(STATS_DIR, "stats.json"), "w", encoding="utf-8") as f:
+            json.dump(stats, f, ensure_ascii=False, indent=2)
+
+
 def printstatus(now: int, total :int, count: int,
                 start: float, latest:float=0,
                 corr: int=0, ans: int=0):
@@ -210,6 +260,7 @@ def test_main(que: list, answers: list):
     ans = 0
     answered = 0
     iscorrect = None
+    record =[]
 
     for i, line in enumerate(que):
         bookcode = line["bookcode"]
@@ -245,11 +296,24 @@ def test_main(que: list, answers: list):
             break
         elif iscorrect:
             count += 1
+            record.append({
+                "bookcode": bookcode,
+                "wid": wid,
+                "jud": "OK"
+            })
+        else:
+            record.append({
+                "bookcode": bookcode,
+                "wid": wid,
+                "jud": "NG"
+            })
 
     if iscorrect == "STOP":
         stopwith = "exit"
     else:
         stopwith = "finish"
+
+    stats_update(record)
 
     return {
         "answered": answered,
@@ -269,4 +333,4 @@ def question_main(data: list, count: int):
 
     boxtitle("準備が整ったら、Enterで開始します", 5)
     input("> ")
-    test_main(questions, answers)
+    result = test_main(questions, answers)
