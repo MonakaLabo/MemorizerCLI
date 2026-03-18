@@ -46,6 +46,24 @@ def tomain():
     main(True)
         
 
+def booklistreplace(files: list) ->list:
+
+    result = []
+    logger.info("INITIALIZED!")
+
+    c2t = load_json(os.path.join(DICT_DIR, "code2title.json"))
+    logger.info("code2title.json を読み込みました。")
+    logger.info(f"{len(files)} 件のファイルを code2title.json によって書籍名化します。")
+
+    for f in files:
+        f = os.path.splitext(f)[0]
+        result.append(c2t[f])
+        logger.info(f"{f} -> {c2t[f]}")
+
+    logger.info(f"置換が終了しました。result( len={len(result)} ) を返します。")
+    return result
+
+
 def choose_tables():
 
     files = [f for f in os.listdir(TABLES_DIR) if f.endswith(".json")]
@@ -86,6 +104,9 @@ def choose_books():
 
     files = [f for f in os.listdir(DICT_DIR) if f.endswith(".json")]
 
+    files.remove("code2title.json")
+    filesreplace = booklistreplace(files)
+
     if not files:
         print("dictファイルが存在しません")
         return []
@@ -95,7 +116,7 @@ def choose_books():
         print("\n使用するdictを選択してください。")
         print("カンマ区切りで複数のdictを選択します。")
 
-        c = make1menu(files)
+        c = make1menu(filesreplace)
 
         selected = []
         valid = True
@@ -142,12 +163,15 @@ def Qcountinput(max: int) ->int:
 
     while True:
         print(f"出題数を入力してください。\n最大値は {max} 問です。")
-        c = intinput()
+        print("None入力で最大値を選択します。")
+        c = input("> ")
+        if c == "":
+            return max
 
-        if 0 < c <= max:
-            return c
-        else:
-            print("有効値を入力してください")
+        if isinstance(c, int) and 0 < c <= max:
+                return c
+        
+        print("有効値を入力してください")
 
 
 def chooseorder():
@@ -218,8 +242,9 @@ def confirmsetting(files: list,
     elif order == "back":
         dp_order = "逆順"
     else:
+        dp_order = None
         errormsg = f"構造エラー: confirmsettingの第2引数 order: str は[\"random\", \"for\", \"back\"]のみを受け付けます({order})"
-        logger.critical(errormsg)
+        logger.error(errormsg)
         ValueError(errormsg)
 
     if reverse == True:

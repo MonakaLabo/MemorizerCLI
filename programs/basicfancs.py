@@ -11,7 +11,7 @@
 import json
 from programs.logger import get_logger
 
-logger = get_logger
+logger = get_logger()
 
 def minititle(text: str):
     
@@ -55,7 +55,7 @@ def load_json(path: str):
             return json.load(f)
     except:
         errormsg = f"構造エラー: 指定されたパス \"{path}\" はjsonファイルではありません"
-        logger.critical(errormsg)
+        logger.error(errormsg)
         raise ValueError(errormsg)
 
 
@@ -67,7 +67,7 @@ def make0menu(*options: str) ->int:
     '''
     if len(options) < 2:
         errormsg = "構文エラー: make0menu()は2つ以上の引数を受け取ります"
-        logger.critical(errormsg)
+        logger.error(errormsg)
         raise ValueError(errormsg)
 
     while True:

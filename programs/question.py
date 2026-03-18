@@ -80,7 +80,7 @@ def changeorder(data: list, order: str) ->list:
         logger.info("dataをシャッフルして返します。")
     else:
         errormsg = f"構造エラー: changeorderの第2引数 order: str は[\"random\", \"for\", \"back\"]のみを受け付けます({order})"
-        logger.critical(errormsg)
+        logger.error(errormsg)
         raise ValueError(errormsg)
     
     return result
