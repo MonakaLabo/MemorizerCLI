@@ -327,10 +327,12 @@ def memorize_menu():
 
 
 def improve_menu():
-    pass
+    print("この機能は実装中です。")
+    main()
 
 def history_menu():
-    pass
+    print("この機能は実装中です。")
+    main()
 
 def information_menu():
     bigrepositoryname()
