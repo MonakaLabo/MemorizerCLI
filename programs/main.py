@@ -333,7 +333,29 @@ def history_menu():
     pass
 
 def information_menu():
-    pass
+    bigrepositoryname()
+
+    print()
+    boxtitle("プロジェクトについて")
+
+    print("""
++---MemorizerCLI
+|
+|   これは、コマンドライン上で動作する暗記支援ツールです。
+|
+|   複数の問題データを統合し、
+|   出題順・出題方向・出題数を柔軟に制御することで、
+|   最適な学習体験を提供します。
+|
+|   ---
+|
+|   Author: MonakaLabo
+|   Version: 0.1.x
+    """)
+
+    input("\n> ")
+
+    main()
 
 
 def main(title=False):
