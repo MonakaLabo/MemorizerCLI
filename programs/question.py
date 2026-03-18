@@ -334,3 +334,12 @@ def question_main(data: list, count: int):
     boxtitle("準備が整ったら、Enterで開始します", 5)
     input("> ")
     result = test_main(questions, answers)
+
+    print()
+    if result["stopwith"] == "finish":
+        minititle("FINISH!")
+    else:
+        minititle(">EXIT<")
+    
+    print()
+    print(f"正解数: {result["correct"]} / {result["answered"]} ({(result["correct"]*100/result["answered"]):.2f} %)")

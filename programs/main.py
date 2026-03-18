@@ -323,7 +323,7 @@ def memorize_menu():
 
             question_main(data, count)
 
-            break
+            main()
 
 
 def improve_menu():
