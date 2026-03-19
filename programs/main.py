@@ -50,6 +50,11 @@ def tomain():
     main(True)
         
 
+def get_version():
+    data = load_json(os.path.join("version", "history.json"))
+    return data["versions"][0]["version"]
+
+
 def booklistreplace(files: list) ->list:
 
     result = []
@@ -344,7 +349,7 @@ def information_menu():
     print()
     boxtitle("プロジェクトについて")
 
-    print("""
+    print(f"""
 +---MemorizerCLI
 |
 |   これは、コマンドライン上で動作する暗記支援ツールです。
@@ -356,7 +361,7 @@ def information_menu():
 |   ---
 |
 |   Author: MonakaLabo
-|   Version: 0.1.x
+|   Version: {get_version()}
     """)
 
     input("\n> ")
