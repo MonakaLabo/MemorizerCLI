@@ -27,6 +27,10 @@ from programs.question import (
     question_main
 )
 
+from programs.editor import (
+    editor_main
+)
+
 logger = get_logger()
 
 TABLES_DIR = "tables"
@@ -369,6 +373,7 @@ def main(title=False):
         "通常暗記モード",
         "苦手暗記モード",
         "履歴表示",
+        "editorを起動",
         "プロジェクトについて"
     )
 
@@ -379,4 +384,6 @@ def main(title=False):
     elif c == 2:
         history_menu()
     elif c == 3:
+        editor_main()
+    elif c == 4:
         information_menu()
