@@ -19,7 +19,7 @@ TMP_DIR = "tmp_update"
 EXTRACTED_DIR = os.path.join(TMP_DIR, "MemorizerCLI-main")
 CODE2TITLE = os.path.join(DICT_DIR, "code2title.json")
 VER_DIR = os.path.join("version", "history.json")
-REMOTE_URL = "https://raw.githubusercontent.com/MonakaLabo/MemorizerCLI/main/version/history.json"
+REMOTE_URL = "https://raw.githubusercontent.com/MonakaLabo/MemorizerCLI/756451d43d48c53c4ce65d32476229c2cfa74d6c/version/history.json"
 ZIP_URL = "https://github.com/MonakaLabo/MemorizerCLI/archive/refs/heads/main.zip"
 EXCLUDE = ["tables", "dict", "history", "logs"]
 
