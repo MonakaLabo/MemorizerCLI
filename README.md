@@ -1,65 +1,123 @@
+# MemorizerCLI
+
+軽量・低燃費に動作する、CUIベースの暗記支援ツールです。  
+JSON形式の単語データを読み込み、4択形式で暗記学習をサポートします。
+
+---
+
+## 推しポイント
+
+- インストール不要（ZIP解凍のみで動作）
+- コンソール動作で低負荷
+- table → dict への自動統合
+- 柔軟な出題設定（順序・範囲・方向）
+- JSONベースで拡張しやすい構造
+- ~~とろなま食感\とろなま～/~~
+
+---
+
+## セットアップ
+
+1. GitHubのからZIPをダウンロード
+緑色の **`<> Code ▼`** ボタンをクリックして表示される **`Download ZIP`** をクリックしてインストールします。
+2. ダウンロードしたZIPを解凍
+3. `launcher.py` を実行
+
+> [!IMPORTANT]
+> 必ず `launcher.py` を実行し、それ以外のファイルを直接実行しないでください。ファイルの破損、不正な動作の原因となります。
+
+---
+
+## 機能一覧
+
+### 通常暗記モード
+
+最も基本的な学習モードです。
+
+#### 設定項目
+
+1. 出題単位
+
+   * table単位
+   * 書籍(dict)単位
+
+2. 使用データ選択
+   複数選択可（カンマ区切り）
+
+3. 出題順
+
+   * ランダム
+   * 正順
+   * 逆順
+
+4. 出題数
+
+   * 空入力で全件
+
+5. 出題方向
+
+   * 表向き（単語 → 意味）
+   * 裏向き（意味 → 単語）
+
 > [!NOTE]
-> README.mdの名をとったただのメモ
+> 単語帳を表から見るか、裏から見るか、というイメージです。
 
-## ディレクトリ構造
+---
+
+### 出題仕様
+
+* 4択問題
+* 数字入力で回答
+* 各問題ごとに以下を表示
 
 ```
-root
-│
-├ launcher.py
-│
-├ programs
-│   ├ main.py
-│   ├ editor.py
-│   ├ improve.py
-│   └ memorize.py
-│
-├ tables
-│   ├ tableA.json
-│   └ ...
-│
-├ dict
-│   ├ status.json
-│   └ books
-│       ├ bookcodeA.json
-│       └ ...
-│
-├ history
-│
-└ stats
+進捗 / 正答率 / 経過時間
+直前問題の正誤 / 回答時間
 ```
 
-## table.jsonの構造
+---
+
+### editor.py
+
+対話形式でtableファイルの作成を支援します。
+ファイルは `editorsave/` に保存され、 `tables/` に移動することで利用可能となります。
+
+---
+
+## ディレクトリ構成
+
+```
+.
+├─ launcher.py
+├─ programs/
+├─ tables/        # 生データ
+├─ dict/          # 統合データ（自動生成）
+├─ editorsave/    # editor出力
+…
+```
+
+---
+
+## データ形式
+
+### table
 
 ```json
 {
-    "tabletitle":"title",
-    "bookcode":"code",
-    "count":"2",
-    "words":{
-        "1":["word1", "mean1"],
-        "2":["word2", "mean2"]
-    }
+  "tabletitle": "基礎英単語_1-100",
+  "bookcode": "eng001",
+  "words": {
+    "1": ["apple", "りんご"],
+    "2": ["dog", "犬"],
+    "3": ["…"]
+  }
 }
 ```
 
-## dict/bookcode.jsonの構造
+---
 
-```json
-{
-    "min_id":"1",
-    "max_id":"1000",
-    "words":{
-        "1":["word1", "word2"],
-        "2":["word2", "word2"]
-    }
-}
-```
+## 今後の実装予定
 
-## dict/code2title.jsonの構造
-```json
-{
-    "bookcode1":"booktitle1",
-    "bookcode2":"booktitle2"
-}
-```
+* 苦手問題の自動抽出
+* 履歴管理
+* 学習統計の可視化
