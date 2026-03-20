@@ -1,0 +1,207 @@
+{
+  "tabletitle": "target1000_501-550",
+  "bookcode": "Tgt1000",
+  "count": "50",
+  "words": {
+    "501": [
+      "blame A for B",
+      "B のことでA を非難する; B をA のせいにする"
+    ],
+    "502": [
+      "punish A for B",
+      "B のことでA を罰する"
+    ],
+    "503": [
+      "forgive A for B",
+      "B のことでA を許す"
+    ],
+    "504": [
+      "deprive A of B",
+      "A からB を奪う"
+    ],
+    "505": [
+      "rob A of B",
+      "[暴力, 強迫, etc]でA からB を奪う"
+    ],
+    "506": [
+      "cure A of B",
+      "A のB を治す; A(人)のB([悪癖, etc])を取り除く"
+    ],
+    "507": [
+      "accuse A of B",
+      "B のことでA を[非難, 告訴]する"
+    ],
+    "508": [
+      "suspect A of B",
+      "B についてA を疑う"
+    ],
+    "509": [
+      "assure A of B",
+      "A(人)にB([物, 事])を[請け負う, 保証する]"
+    ],
+    "510": [
+      "transform A [into, to] B",
+      "A をB に[変える, 変質させる]"
+    ],
+    "511": [
+      "talk A into B",
+      "A(人)を説得してB をさせる"
+    ],
+    "512": [
+      "present A with B",
+      "A にB を[贈る, 与える]"
+    ],
+    "513": [
+      "diagnose A as B",
+      "A をB と診断する"
+    ],
+    "514": [
+      "strike A as B",
+      "A(人)にB の印象を与える"
+    ],
+    "515": [
+      "congratulate A [on, for] B",
+      "B のことでA を祝う"
+    ],
+    "516": [
+      "name A after B",
+      "A をB にちなんで名づける"
+    ],
+    "517": [
+      "make [an effort, efforts]",
+      "努力する"
+    ],
+    "518": [
+      "make way",
+      "道をあける"
+    ],
+    "519": [
+      "[live, lead] a ~ life",
+      "～の生活をする"
+    ],
+    "520": [
+      "[make, earn] [a, one's] living",
+      "生計を立てる"
+    ],
+    "521": [
+      "take one's place",
+      "[いつもの席に着く; 特定の地位を占める, ～にとって代わる]"
+    ],
+    "522": [
+      "take turns",
+      "交代でする"
+    ],
+    "523": [
+      "take [a chance, chances]",
+      "思い切ってやってみる; 賭ける"
+    ],
+    "524": [
+      "take shape",
+      "(はっきりした)形をとる"
+    ],
+    "525": [
+      "[take, have] a seat",
+      "着席する"
+    ],
+    "526": [
+      "take [a risk, risks]",
+      "(あえて)危険を冒す; 賭ける"
+    ],
+    "527": [
+      "shake hands",
+      "握手する"
+    ],
+    "528": [
+      "change hands",
+      "持ち主が変わる"
+    ],
+    "529": [
+      "have a say (in ~)",
+      "(～に)[発言権, 発言力]を持つ"
+    ],
+    "530": [
+      "[have, get] one's (own) way",
+      "思い通りにする"
+    ],
+    "531": [
+      "[keep, hold] one's temper",
+      "冷静さを保つ"
+    ],
+    "532": [
+      "take advantage of ~",
+      "～を利用する; ～につけ込む"
+    ],
+    "533": [
+      "take control of ~",
+      "～を[制御, 管理, 支配]する"
+    ],
+    "534": [
+      "make use of ~",
+      "～を利用する"
+    ],
+    "535": [
+      "make fun of ~",
+      "～をからかう"
+    ],
+    "536": [
+      "make friends with ~",
+      "～と親しくなる"
+    ],
+    "537": [
+      "make much of ~",
+      "～を重要視する; <否定文で>～を理解する"
+    ],
+    "538": [
+      "have difficulty (in) doing",
+      "…するのが困難である, 苦労しながら…する"
+    ],
+    "539": [
+      "have access to ~",
+      "～を利用できる; ～に近づける"
+    ],
+    "540": [
+      "have an [influence, effect] on ~",
+      "～に影響を与える"
+    ],
+    "541": [
+      "have a likiing for ~",
+      "～を好む"
+    ],
+    "542": [
+      "give rise to ~",
+      "～を[引き起こす, 生む]"
+    ],
+    "543": [
+      "give birth to ~",
+      "～を産む; ～の原因になる"
+    ],
+    "544": [
+      "find one's way to ~",
+      "～へたどり着く, ～まで道を探しながら進む"
+    ],
+    "545": [
+      "keep an eye on ~",
+      "～に気を付けている, ～から目を離さない"
+    ],
+    "546": [
+      "fall victim to ~",
+      "～の[犠牲, 餌食]になる"
+    ],
+    "547": [
+      "catch sight of ~",
+      "～を[見つける, 見かける]"
+    ],
+    "548": [
+      "put [emphasis, stress] [on, upon] ~",
+      "～を[強調, 重視]する"
+    ],
+    "549": [
+      "be related to ~",
+      "～と関係がある; ～と姻戚関係がある"
+    ],
+    "550": [
+      "be similar to ~",
+      "～に似ている"
+    ]
+  }
+}
