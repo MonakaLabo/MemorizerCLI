@@ -1,6 +1,14 @@
 {
     "versions":[
         {
+            "version":"0.1.1",
+            "changes":[
+                "tableを追加しました。",
+                "toolsのバグを修正しました。",
+                "その他微細な修正。"
+            ]
+        },
+        {
             "version":"0.1.0",
             "changes":[
                 "Beta版をリリース"

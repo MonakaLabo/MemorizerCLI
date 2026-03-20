@@ -32,7 +32,7 @@ def convert_table(path):
     result = {
         "tabletitle": tabletitle,
         "bookcode": bookcode,
-        "count": f"\"{count}\"", # 他ファイルと統一するため。
+        "count": f"{count}", # 他ファイルと統一するため。
         "words": words
     }
 
