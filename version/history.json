@@ -1,6 +1,12 @@
 {
     "versions":[
         {
+            "version":"0.1.2",
+            "changes":[
+                "内部変数の不備を修正。"
+            ]
+        },
+        {
             "version":"0.1.1",
             "changes":[
                 "tableを追加しました。",
