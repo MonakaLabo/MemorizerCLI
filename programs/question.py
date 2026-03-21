@@ -121,6 +121,48 @@ def swither(data: list, count: int) ->list:
     return result
 
 
+def history_update(result: dict, record: list, mode: int):
+    """
+    result: test_mainの返り値
+    record: stats_updateに渡したものと同じ
+    mode: 0 or 1
+    """
+
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    HISTORY_DIR = os.path.join(BASE_DIR, "history")
+    os.makedirs(HISTORY_DIR, exist_ok=True)
+
+    now = datetime.now()
+    ym = now.strftime("%Y-%m")
+    path = os.path.join(HISTORY_DIR, f"{ym}.json")
+
+    books = defaultdict(list)
+    for line in record:
+        books[line["bookcode"]].append(line["wid"])
+
+    targets = []
+    for bookcode, wids in books.items():
+        targets.append([bookcode, min(wids), max(wids)])
+
+    entry = {
+        "datetime": now.strftime("%Y-%m-%dT%H:%M:%S"),
+        "mode": mode,
+        "targets": targets,
+        "count": result["answered"],
+        "correct": result["correct"]
+    }
+
+    if os.path.exists(path):
+        data = load_json(path)
+    else:
+        data = {"history": []}
+
+    data["history"].append(entry)
+
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+
 def stats_update(record):
 
     def apply_update(target_dict, idx):
@@ -307,6 +349,15 @@ def test_main(que: list, answers: list):
         stopwith = "finish"
 
     stats_update(record)
+
+    history_update(
+    result={
+        "answered": answered,
+        "correct": count
+    },
+    record=record,
+    mode=0
+    )
 
     return {
         "answered": answered,
