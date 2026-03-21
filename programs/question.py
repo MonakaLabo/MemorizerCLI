@@ -268,12 +268,12 @@ def test_main(que: list, answers: list):
         Q = line["q"]
         A = line["a"]
 
-        timelatest = time.time()
-
         if i == 0:
             printstatus(i+1, total, count, timestart)
         else:
             printstatus(i+1, total, count, timestart, timelatest, correct, ans)
+
+        timelatest = time.time()
 
         # 選択肢生成
         while True:
