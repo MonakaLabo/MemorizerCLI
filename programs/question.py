@@ -123,6 +123,19 @@ def swither(data: list, count: int) ->list:
 
 def stats_update(record):
 
+    def apply_update(target_dict, idx):
+        for bookcode, wid_list in target_dict.items():
+            if bookcode not in stats:
+                stats[bookcode] = {}
+
+            for wid in wid_list:
+                wid = str(wid)
+
+                if wid not in stats[bookcode]:
+                    stats[bookcode][wid] = [0, 0]
+
+                stats[bookcode][wid][idx] += 1
+
     OK = defaultdict(list)
     NG = defaultdict(list)
 
@@ -131,40 +144,20 @@ def stats_update(record):
             OK[line["bookcode"]].append(line["wid"])
         if line["jud"] == "NG":
             NG[line["bookcode"]].append(line["wid"])
-    
-    os.makedirs(STATS_DIR, exist_ok=True)
 
-    if os.path.exists(os.path.join(STATS_DIR, "stats.json")):
-        stats = load_json(os.path.join(STATS_DIR, "stats.json"))
+    os.makedirs(STATS_DIR, exist_ok=True)
+    path = os.path.join(STATS_DIR, "stats.json")
+
+    if os.path.exists(path):
+        stats = load_json(path)
     else:
         stats = {}
 
-        for bookcode, wid_list in OK.items():
-            if bookcode not in stats:
-                stats[bookcode] = {}
+    apply_update(OK, 0)
+    apply_update(NG, 1)
 
-            for wid in wid_list:
-                wid = str(wid)
-
-                if wid not in stats[bookcode]:
-                    stats[bookcode][wid] = [0, 0]
-
-                stats[bookcode][wid][0] += 1
-
-        for bookcode, wid_list in NG.items():
-            if bookcode not in stats:
-                stats[bookcode] = {}
-
-            for wid in wid_list:
-                wid = str(wid)
-
-                if wid not in stats[bookcode]:
-                    stats[bookcode][wid] = [0, 0]
-
-                stats[bookcode][wid][1] += 1
-
-        with open(os.path.join(STATS_DIR, "stats.json"), "w", encoding="utf-8") as f:
-            json.dump(stats, f, ensure_ascii=False, indent=2)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(stats, f, ensure_ascii=False, indent=2)
 
 
 def printstatus(now: int, total :int, count: int,
