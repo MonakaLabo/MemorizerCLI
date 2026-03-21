@@ -35,11 +35,12 @@ logger = get_logger()
 
 TABLES_DIR = "tables"
 DICT_DIR = "dict"
+HISTORY_DIR = "history"
 
 
 def bigrepositoryname():
     print()
-    print("##      ##                                 ##                  #######  ##       ########\n###    ###                                                    ###   ### ##          ##\n####  ####  ####   ##  ##   ####  # ###   ###   ######  ####  ##        ##          ##\n## #### ## ##  ## ## ## ## ##  ## ### ##   ##     ###  ##  ## ##        ##          ##\n##  ##  ## ####   ## ## ## ##  ## ##       ##    ###   ####   ###   ### ##          ##\n##      ##  ##### ## ## ##  ####  ##     ###### ######  #####  #######  ######## ########") # MemoriseCLI
+    print("##      ##                                 ##                         #######  ##       ########\n###    ###                                                           ###   ### ##          ##\n####  ####  ####   ##  ##   ####  # ###   ###   ######  ####  # ###  ##        ##          ##\n## #### ## ##  ## ## ## ## ##  ## ### ##   ##     ###  ##  ## ### ## ##        ##          ##\n##  ##  ## ####   ## ## ## ##  ## ##       ##    ###   ####   ##     ###   ### ##          ##\n##      ##  ##### ## ## ##  ####  ##     ###### ######  ##### ##      #######  ######## ########") # MemoriserCLI
     print()
 
 
@@ -340,8 +341,99 @@ def improve_menu():
     main()
 
 def history_menu():
-    print("この機能は実装中です。")
-    main()
+
+    if not os.path.exists(HISTORY_DIR):
+        print("履歴が存在しません")
+        main()
+        return
+
+    files = [f for f in os.listdir(HISTORY_DIR) if f.endswith(".json")]
+
+    if not files:
+        print("履歴が存在しません")
+        main()
+        return
+
+    # 月でソート（新しい順）
+    files.sort(reverse=True)
+
+    # 書籍名変換用
+    c2t = load_json(os.path.join(DICT_DIR, "code2title.json"))
+
+    idx = 0
+
+    while True:
+
+        file = files[idx]
+        ym = file.replace(".json", "")
+
+        minititle(ym)
+
+        path = os.path.join(HISTORY_DIR, file)
+        data = load_json(path)
+
+        history = data.get("history", [])
+
+        # 新しいものが上になるように逆順
+        for entry in reversed(history):
+
+            dt = entry["datetime"]
+            date, time_ = dt.split("T")
+
+            mode = entry["mode"]
+            if mode == 0:
+                mode_str = "通常暗記モード"
+            elif mode == 1:
+                mode_str = "苦手暗記モード"
+            else:
+                mode_str = f"UNKNOWN({mode})"
+
+            print()
+            print(f"DATE: {date}, TIME: {time_}")
+            print(f"MODE: {mode_str}")
+
+            print("BOOK:", end=" ")
+
+            for i, t in enumerate(entry["targets"]):
+                bookcode, start, end = t
+
+                title = c2t.get(bookcode, bookcode)
+
+                if i == 0:
+                    print(f"{title} ({start}～{end})")
+                else:
+                    print(f"      {title} ({start}～{end})")
+
+            correct = entry["correct"]
+            count = entry["count"]
+
+            try:
+                rate = correct / count * 100
+            except ZeroDivisionError:
+                rate = 0
+
+            print(f"CORRECT: {correct} / {count} ({rate:.2f} %)")
+
+            print("\n---")
+
+        print()
+        c = make0menu(
+            "終了",
+            "前の月へ",
+            "次の月へ"
+        )
+
+        if c == 0:
+            main()
+            return
+
+        elif c == 1:
+            if idx < len(files) - 1:
+                idx += 1
+
+        elif c == 2:
+            if idx > 0:
+                idx -= 1
 
 def information_menu():
     bigrepositoryname()

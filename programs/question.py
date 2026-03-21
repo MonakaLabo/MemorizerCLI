@@ -121,7 +121,62 @@ def swither(data: list, count: int) ->list:
     return result
 
 
+def history_update(result: dict, record: list, mode: int):
+    """
+    result: test_mainの返り値
+    record: stats_updateに渡したものと同じ
+    mode: 0 or 1
+    """
+
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    HISTORY_DIR = os.path.join(BASE_DIR, "history")
+    os.makedirs(HISTORY_DIR, exist_ok=True)
+
+    now = datetime.now()
+    ym = now.strftime("%Y-%m")
+    path = os.path.join(HISTORY_DIR, f"{ym}.json")
+
+    books = defaultdict(list)
+    for line in record:
+        books[line["bookcode"]].append(line["wid"])
+
+    targets = []
+    for bookcode, wids in books.items():
+        targets.append([bookcode, min(wids), max(wids)])
+
+    entry = {
+        "datetime": now.strftime("%Y-%m-%dT%H:%M:%S"),
+        "mode": mode,
+        "targets": targets,
+        "count": result["answered"],
+        "correct": result["correct"]
+    }
+
+    if os.path.exists(path):
+        data = load_json(path)
+    else:
+        data = {"history": []}
+
+    data["history"].append(entry)
+
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+
 def stats_update(record):
+
+    def apply_update(target_dict, idx):
+        for bookcode, wid_list in target_dict.items():
+            if bookcode not in stats:
+                stats[bookcode] = {}
+
+            for wid in wid_list:
+                wid = str(wid)
+
+                if wid not in stats[bookcode]:
+                    stats[bookcode][wid] = [0, 0]
+
+                stats[bookcode][wid][idx] += 1
 
     OK = defaultdict(list)
     NG = defaultdict(list)
@@ -131,40 +186,20 @@ def stats_update(record):
             OK[line["bookcode"]].append(line["wid"])
         if line["jud"] == "NG":
             NG[line["bookcode"]].append(line["wid"])
-    
-    os.makedirs(STATS_DIR, exist_ok=True)
 
-    if os.path.exists(os.path.join(STATS_DIR, "stats.json")):
-        stats = load_json(os.path.join(STATS_DIR, "stats.json"))
+    os.makedirs(STATS_DIR, exist_ok=True)
+    path = os.path.join(STATS_DIR, "stats.json")
+
+    if os.path.exists(path):
+        stats = load_json(path)
     else:
         stats = {}
 
-        for bookcode, wid_list in OK.items():
-            if bookcode not in stats:
-                stats[bookcode] = {}
+    apply_update(OK, 0)
+    apply_update(NG, 1)
 
-            for wid in wid_list:
-                wid = str(wid)
-
-                if wid not in stats[bookcode]:
-                    stats[bookcode][wid] = [0, 0]
-
-                stats[bookcode][wid][0] += 1
-
-        for bookcode, wid_list in NG.items():
-            if bookcode not in stats:
-                stats[bookcode] = {}
-
-            for wid in wid_list:
-                wid = str(wid)
-
-                if wid not in stats[bookcode]:
-                    stats[bookcode][wid] = [0, 0]
-
-                stats[bookcode][wid][1] += 1
-
-        with open(os.path.join(STATS_DIR, "stats.json"), "w", encoding="utf-8") as f:
-            json.dump(stats, f, ensure_ascii=False, indent=2)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(stats, f, ensure_ascii=False, indent=2)
 
 
 def printstatus(now: int, total :int, count: int,
@@ -268,12 +303,12 @@ def test_main(que: list, answers: list):
         Q = line["q"]
         A = line["a"]
 
-        timelatest = time.time()
-
         if i == 0:
             printstatus(i+1, total, count, timestart)
         else:
             printstatus(i+1, total, count, timestart, timelatest, correct, ans)
+
+        timelatest = time.time()
 
         # 選択肢生成
         while True:
@@ -314,6 +349,15 @@ def test_main(que: list, answers: list):
         stopwith = "finish"
 
     stats_update(record)
+
+    history_update(
+    result={
+        "answered": answered,
+        "correct": count
+    },
+    record=record,
+    mode=0
+    )
 
     return {
         "answered": answered,

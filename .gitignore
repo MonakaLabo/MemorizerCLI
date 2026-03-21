@@ -4,6 +4,7 @@ logs/
 dict/
 !dict/code2title.json
 editorsave/
+history/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
